@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Pattern2D from "./Pattern2D";
 
 export default class ThreeScene {
@@ -21,9 +22,16 @@ export default class ThreeScene {
       alpha: true,
     });
     this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.minPolarAngle = 0.1;
+    this.controls.maxPolarAngle = 3.0;
 
-    const pattern2D = new Pattern2D();
-    this.scene.add(pattern2D);
+    this.verticalPattern2D = new Pattern2D();
+    this.horizontalPattern2D = new Pattern2D();
+    this.horizontalPattern2D.rotateX(Math.PI / 2);
+
+    this.scene.add(this.verticalPattern2D);
+    this.scene.add(this.horizontalPattern2D);
 
     this.animate = this.animate.bind(this);
     this.handleResize = this.handleResize.bind(this);
@@ -45,11 +53,17 @@ export default class ThreeScene {
 
   animate() {
     requestAnimationFrame(this.animate);
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
 
   dispose() {
     this.renderer.dispose();
     window.removeEventListener("resize", this.handleResize);
+  }
+
+  setPattern(horizontal, vertical) {
+    this.horizontalPattern2D.setPattern(horizontal);
+    this.verticalPattern2D.setPattern(vertical);
   }
 }

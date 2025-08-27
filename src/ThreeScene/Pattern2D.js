@@ -4,20 +4,18 @@ const vertexShader = `
 varying vec2 vUv;
 void main() {
   vUv = uv;
-  gl_Position = vec4(position, 1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `;
 
 const fragmentShader = `
+#define POINT_COUNT 13
+
 varying vec2 vUv;
+uniform float values[POINT_COUNT];
+uniform float thickness;
 
 vec4 tex2d(vec2 uv) {
-
-  const int POINT_COUNT = 13;
-  const float thickness = 1e-2;
-  const float values[POINT_COUNT] = float[POINT_COUNT](
-  1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
-  );
 
   float stepX = 1.0 / float(POINT_COUNT - 1);
   float interpolatedValue = 0.0;
@@ -35,7 +33,7 @@ vec4 tex2d(vec2 uv) {
     return vec4(1.0, 0.0, 0.0, 1.0);
   }
 
-  float threshold = 1e-1;
+  float threshold = 2e-2;
   vec2 unit = vec2(float(POINT_COUNT)-1.0, 10.0);
   vec2 offsetUV = uv + vec2(1.0/unit.x, 0.0);
   if (abs(trunc(offsetUV.x * unit.x) - offsetUV.x * unit.x) < threshold ||
@@ -43,7 +41,7 @@ vec4 tex2d(vec2 uv) {
     return vec4(0.0,0.0,0.0,1.0);
   }
 
-  return vec4(1.0);
+  return vec4(0.0);
 }
 
 vec2 cartesianToPolar(vec2 xy) {
@@ -58,7 +56,13 @@ void main() {
 
   if (length(uv - vec2(0.5)) > 0.5+1e-2) discard;
 
-  gl_FragColor = tex2d(coord);
+  vec4 color = tex2d(coord);
+  if(color.a < 1e-3){
+    discard;
+    return;
+  }
+
+  gl_FragColor = color;
 }
 `;
 
@@ -69,8 +73,25 @@ export default class Pattern2D extends THREE.Mesh {
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
+      side: THREE.DoubleSide,
+      uniforms: {
+        values: {
+          value: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        },
+        thickness: {
+          value: 2e-2,
+        },
+      },
     });
 
     super(geometry, material);
+  }
+
+  setPattern(data) {
+    if (data.length !== 12) {
+      console.warn("invalid pattern data");
+      return;
+    }
+    this.material.uniforms.values.value = [...data, data[0]];
   }
 }

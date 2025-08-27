@@ -8,6 +8,10 @@ function App() {
   useEffect(() => {
     if (mountRef.current) {
       sceneRef.current = new ThreeScene(mountRef.current);
+      sceneRef.current.setPattern(
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+        [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]
+      );
     }
 
     return () => {
