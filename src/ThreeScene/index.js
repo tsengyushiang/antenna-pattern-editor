@@ -74,4 +74,10 @@ export default class ThreeScene {
     this.verticalPattern2D.setPattern(vertical);
     this.pattern3D.setPattern(horizontal, vertical);
   }
+
+  setVisibility({ horizontal, vertical, pattern3d }) {
+    this.horizontalPattern2D.visible = horizontal;
+    this.verticalPattern2D.visible = vertical;
+    this.pattern3D.visible = pattern3d;
+  }
 }
