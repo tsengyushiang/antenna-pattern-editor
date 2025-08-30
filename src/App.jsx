@@ -9,8 +9,8 @@ function App() {
     if (mountRef.current) {
       sceneRef.current = new ThreeScene(mountRef.current);
       sceneRef.current.setPattern(
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-        [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]
+        [1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.8, 0.5, 1],
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]
       );
     }
 
