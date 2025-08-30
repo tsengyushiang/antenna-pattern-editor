@@ -1,12 +1,27 @@
-# React + Vite
+# Antenna Pattern Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive web-based tool for designing and visualizing antenna radiation patterns. Users can edit both vertical and horizontal planes, then instantly preview the combined result in an intuitive 3D visualization.
 
-Currently, two official plugins are available:
+![demo](./demo.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Quick start
 
-## Expanding the ESLint configuration
+## Development Environment Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+docker run --rm -it -v .:/app -w /app -p 5173:5173 node:20 bash
+yarn
+yarn dev
+```
+
+## Build
+
+```
+yarn build
+```
+
+# References
+
+- [Antenna Pattern Editor 3.0](https://www.wireless-planning.com/antenna-pattern-editor)
+
+![demo](./ref.png)
