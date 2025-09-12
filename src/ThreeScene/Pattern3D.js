@@ -97,9 +97,9 @@ export default class Pattern3D extends THREE.Mesh {
     for (let row = 0; row < segments; row++) {
       for (let col = 0; col < segments; col++) {
         const uv00 = [row, col, 0];
-        const uv01 = [row, (col + 1) % segments, 0];
+        const uv01 = [row, col + 1, 0];
         const uv10 = [(row + 1) % segments, col, 0];
-        const uv11 = [(row + 1) % segments, (col + 1) % segments, 0];
+        const uv11 = [(row + 1) % segments, col + 1, 0];
 
         uvs.push(...uv00, ...uv10, ...uv11);
         uvs.push(...uv00, ...uv11, ...uv01);
